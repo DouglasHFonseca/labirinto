@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "maze.h"
 
 int count = 0;
+#define MAX 10
+
+typedef struct stack
+{
+  int items[MAX];
+  int top;
+} st;
 
 void createEmptyStack(st *s)
 {

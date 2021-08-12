@@ -1,13 +1,6 @@
 #ifndef MAZE_H_INCLUDED
 #define MAZE_H_INCLUDED
 // Creating a stack
-#define MAX 10
-
-typedef struct stack
-{
-  int items[MAX];
-  int top;
-} st;
 
 typedef struct maze
 {
