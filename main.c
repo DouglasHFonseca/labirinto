@@ -13,7 +13,7 @@ typedef struct stack
 void createEmptyStack(st *s)
 {
   s->top = -1;
-}
+};
 
 // Check if the stack is full
 int isfull(st *s)
