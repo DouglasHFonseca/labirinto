@@ -1,97 +1,106 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include "mouseStack.h"
+#include "mouseMovement.h"
+#include "userStack.h"
+#include "interfaceGrafica.h"
+int main() {
 
-int count = 0;
-#define MAX 10
 
-typedef struct stack
-{
-  int items[MAX];
-  int top;
-} st;
 
-void createEmptyStack(st *s)
-{
-  s->top = -1;
-};
+    TUserStack userStack;
+    FPVazia2(&userStack);
 
-// Check if the stack is full
-int isfull(st *s)
-{
-  if (s->top == MAX - 1)
-    return 1;
-  else
+    TMazeStack  mazeStack;
+    FPVazia(&mazeStack);
+
+    TMazeCell currentCell, exitCell;
+
+    printf("\t#####Bem vindo ao Labirinto!#####\n");
+    printf("Ao digitar a primeira linha, o numero de caracteres, sera o numero de colunas\n");
+    printf("Exemplo, 0000 tera 4 colunas.\n");
+    printf("Recomenda-se rodar no terminal.\n\n");
+
+    do{
+        printf("\nDigite a 1 linha: ");
+        leLinha(&userStack);
+        if(!(isPilhaVazia2(userStack))){
+            break;
+        }
+    } while (1);
+
+    int rows, columns;
+    columns = userStack.profundidade;
+    rows = columns;
+    char** maze = malloc((sizeof (char*)) * (rows+2));
+
+
+    for (int i=0; i<rows+2; i++)
+        maze[i] = (char *)malloc((columns+2) * sizeof(char));
+
+    for(int i = 0; i < rows+2; i++){
+        for(int j = 0; j < columns+2; j++){
+            maze[i][j] = '1';
+        }
+    }
+
+    int m = leLinhas(&userStack, maze, rows, &currentCell, &exitCell) ;
+    if(m == -1){
+        printf("\nProgram will terminate.");
+        printf("\nPress enter to continue...");
+        for (int i = 0; i <  rows; i++)
+            free(maze[i]);
+
+        free(maze);
+        getchar();
+        return 0;
+    }
+    int height = rows+1;
+    int lenght = columns+1;
+
+    TCoordenadas limitCoord;
+
+    limitCoord.y = rows+3;
+    limitCoord.x = columns+3;
+
+
+    int isTherePath;
+    do{
+        isTherePath = moveMouse(maze, &currentCell, exitCell, &mazeStack, limitCoord);
+        printf("\n");
+        system("cls");
+        showDisplay(height,lenght, maze);
+        sleep(1);
+    } while (isTherePath == 0);
+
+
+    if(isTherePath == 1){
+        mgotoxy(0, height+2);
+        printf("\nPath found!! The mouse has escaped!!\n");
+        printf("Press enter to continue");
+        getchar();
+    }
+    if(isTherePath == -1){
+        mgotoxy(0, height+2);
+        printf("\n\nThere is no path... Beyond the scope of light, beneath the reach of dark."
+               "\nWhat could possibly await us, yet we seek it, insatiably... For that's our curse.\n\n");
+        printf("Press enter to continue");
+        getchar();
+    }
+
+
+    for (int i = 0; i < columns+2; i++) {
+        for(int j = 0; j < rows+2; j++){
+            printf("%c", maze[i][j]);
+        }
+        printf("\n");
+    }
+
+
+
+    for (int i = 0; i <  rows; i++)
+        free(maze[i]);
+
+    free(maze);
+
     return 0;
-}
-
-// Check if the stack is empty
-int isempty(st *s)
-{
-  if (s->top == -1)
-    return 1;
-  else
-    return 0;
-}
-
-// Add elements into stack
-void push(st *s, int newitem)
-{
-  if (isfull(s))
-  {
-    printf("STACK FULL");
-  }
-  else
-  {
-    s->top++;
-    s->items[s->top] = newitem;
-  }
-  count++;
-}
-
-// Remove element from stack
-void pop(st *s)
-{
-  if (isempty(s))
-  {
-    printf("\n STACK EMPTY \n");
-  }
-  else
-  {
-    printf("Item popped= %d", s->items[s->top]);
-    s->top--;
-  }
-  count--;
-  printf("\n");
-}
-
-// Print elements of stack
-void printStack(st *s)
-{
-  printf("Stack: ");
-  for (int i = 0; i < count; i++)
-  {
-    printf("%d ", s->items[i]);
-  }
-  printf("\n");
-}
-
-// Driver code
-int main()
-{
-  int ch;
-  st *s = (st *)malloc(sizeof(st));
-
-  createEmptyStack(s);
-
-  push(s, 1);
-  push(s, 2);
-  push(s, 3);
-  push(s, 4);
-
-  printStack(s);
-
-  pop(s);
-
-  printf("\nAfter popping out\n");
-  printStack(s);
 }
