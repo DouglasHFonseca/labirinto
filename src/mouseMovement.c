@@ -1,4 +1,5 @@
 #include "mouseMovement.h"
+#include <unistd.h>
 
 int isCellWalkable(char cell) {
     return(!(cell == '1' || cell == '.' || cell == 'm'));
@@ -59,8 +60,6 @@ int addPath(char** maze, TMazeCell *currentCell, TMazeStack *mazeStack, TCoorden
 
     //Verifica se nao ha mais caminhos, pois a pilha esta vazia
     if(isPilhaVazia(*mazeStack)){
-        printf("\n\nThere is no path... Beyond the scope of light, beneath the reach of dark."
-               "\nWhat could possibly await us, yet we seek it, insatiably... For that's our curse.\n\n");
         return -1;
     }
 
@@ -70,6 +69,7 @@ int addPath(char** maze, TMazeCell *currentCell, TMazeStack *mazeStack, TCoorden
     //Pode ser deletado, pois nao faz nada exceto imprimir a msg.
     if(size == mazeStack->profundidade){
         printf("Backtracking...\n");
+        sleep(1);
     }
 
     return 1;
@@ -90,7 +90,7 @@ int moveMouse(char** maze, TMazeCell *currentCell, TMazeCell exitCell, TMazeStac
         currentCell->coordenadas = aux;
 
         if(isEqual(*currentCell, exitCell)){    //Verifica se eh a saida.
-            printf("\nPath found!! The mouse has escaped!!\n");
+
             return 1;
         }
 

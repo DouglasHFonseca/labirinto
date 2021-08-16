@@ -2,7 +2,10 @@
 #include "mouseStack.h"
 #include "mouseMovement.h"
 #include "userStack.h"
+#include "interfaceGrafica.h"
 int main() {
+
+
 
     TUserStack userStack;
     FPVazia2(&userStack);
@@ -12,7 +15,10 @@ int main() {
 
     TMazeCell currentCell, exitCell;
 
-
+    printf("\t#####Bem vindo ao Labirinto!#####\n");
+    printf("Ao digitar a primeira linha, o numero de caracteres, sera o numero de colunas\n");
+    printf("Exemplo, 0000 tera 4 colunas.\n");
+    printf("Recomenda-se rodar no terminal.\n\n");
 
     do{
         printf("\nDigite a 1 linha: ");
@@ -37,30 +43,50 @@ int main() {
         }
     }
 
-    leLinhas(&userStack, maze, rows, &currentCell, &exitCell) ;
+    int m = leLinhas(&userStack, maze, rows, &currentCell, &exitCell) ;
+    if(m == -1){
+        printf("\nProgram will terminate.");
+        printf("\nPress enter to continue...");
+        for (int i = 0; i <  rows; i++)
+            free(maze[i]);
 
+        free(maze);
+        getchar();
+        return 0;
+    }
+    int height = rows+1;
+    int lenght = columns+1;
 
     TCoordenadas limitCoord;
 
     limitCoord.y = rows+3;
     limitCoord.x = columns+3;
 
-//    maze[0][0] = '1'; maze[0][1] = '1'; maze[0][2] = '1'; maze[0][3] = '1'; maze[0][4] = '1'; maze[0][5] = '1';
-//    maze[1][0] = '1'; maze[1][1] = '1'; maze[1][2] = '1'; maze[1][3] = '1'; maze[1][4] = '1'; maze[1][5] = '1';
-//    maze[2][0] = '1'; maze[2][1] = '1'; maze[2][2] = '1'; maze[2][3] = '0'; maze[2][4] = '0'; maze[2][5] = '1';
-//    maze[3][0] = '1'; maze[3][1] = '0'; maze[3][2] = '0'; maze[3][3] = '0'; maze[3][4] = 'e'; maze[3][5] = '1';
-//    maze[4][0] = '1'; maze[4][1] = '0'; maze[4][2] = '0'; maze[4][3] = 'm'; maze[4][4] = '1'; maze[4][5] = '1';
-//    maze[5][0] = '1'; maze[5][1] = '1'; maze[5][2] = '1'; maze[5][3] = '1'; maze[5][4] = '1'; maze[5][5] = '1';
-//
 
     int isTherePath;
     do{
         isTherePath = moveMouse(maze, &currentCell, exitCell, &mazeStack, limitCoord);
+        printf("\n");
+        system("cls");
+        showDisplay(height,lenght, maze);
+        sleep(1);
     } while (isTherePath == 0);
 
 
+    if(isTherePath == 1){
+        mgotoxy(0, height+2);
+        printf("\nPath found!! The mouse has escaped!!\n");
+        printf("Press enter to continue");
+        getchar();
+    }
+    if(isTherePath == -1){
+        mgotoxy(0, height+2);
+        printf("\n\nThere is no path... Beyond the scope of light, beneath the reach of dark."
+               "\nWhat could possibly await us, yet we seek it, insatiably... For that's our curse.\n\n");
+        printf("Press enter to continue");
+        getchar();
+    }
 
-    printf("\n");
 
     for (int i = 0; i < columns+2; i++) {
         for(int j = 0; j < rows+2; j++){

@@ -46,7 +46,8 @@ void TransferePPRange2(TUserStack *pilha1, TUserStack *pilha2, int n) {
 void InvertePilha3(TUserStack *pilha) {
 
     if(isPilhaVazia2(*pilha)){
-        printf("Pilha Vazia");
+        printf("Pilha Vazia\n");
+        return;
     }
 
     TUserStack pilha2;
@@ -80,7 +81,7 @@ int leLinha(TUserStack *stack) { //Le uma linha individualmente, e adiciona cada
 }
 
 //Faz o push e pop dos characteres das linhas lidas e coloca na posicao [i][j], faz isso ate acabar o espaco.
-void leLinhas(TUserStack *userStack, char** maze, int rows, TMazeCell *currentCell, TMazeCell *exitCell) {
+int leLinhas(TUserStack *userStack, char** maze, int rows, TMazeCell *currentCell, TMazeCell *exitCell) {
     int j, isSaida = 0, isMouse = 0;
     TSymbol  symbol;
 
@@ -88,7 +89,7 @@ void leLinhas(TUserStack *userStack, char** maze, int rows, TMazeCell *currentCe
 
         j = 1;
         if(isPilhaVazia2(*userStack)){
-            for(int j = 1; j <= rows; j++){
+            for(int j = 1; j < rows; j++){
                 maze[i][j] = '0';
             }
         }
@@ -128,6 +129,10 @@ void leLinhas(TUserStack *userStack, char** maze, int rows, TMazeCell *currentCe
             printf("Digite a %d linha: ", i + 1);
             leLinha(userStack);
         }
-
     }
+    if(isMouse == 0){
+        printf("\n\nMouse is not present.");
+        return -1;
+    }
+    return 1;
 }

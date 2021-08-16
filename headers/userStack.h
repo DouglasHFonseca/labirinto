@@ -46,6 +46,6 @@ int leLinha(TUserStack *stack);
 
 void InvertePilha3(TUserStack *pilha);
 
-void leLinhas(TUserStack *userStack, char** maze, int rows, TMazeCell *currentCell, TMazeCell *exitCell);
+int leLinhas(TUserStack *userStack, char** maze, int rows, TMazeCell *currentCell, TMazeCell *exitCell);
 
 #endif //PROVA2_USERSTACK_H
