@@ -25,6 +25,8 @@ typedef struct mazestack{
 
 } TMazeStack;
 
+
+
 //==================================Basico======================================
 
 void FPVazia(TMazeStack *pilha);

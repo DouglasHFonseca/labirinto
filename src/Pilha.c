@@ -1,5 +1,5 @@
-#include "mazeStack.h"
-
+#include "mouseStack.h"
+#include "userStack.h"
 //==================================Basico======================================
 
 //Aqui jazem as funções básicas PFVazia, pop, push, isVazia.
